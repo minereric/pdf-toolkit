@@ -1,57 +1,74 @@
 import React from 'react';
 import { useTranslation } from '../../i18n/LanguageContext.jsx';
 
-const badgeStyles = {
-    blue: 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-    purple: 'bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800',
-    emerald: 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
-    amber: 'bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800',
-    teal: 'bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800',
-    indigo: 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800',
-    cyan: 'bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800',
-    violet: 'bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800',
-    rose: 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800',
-    gray: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700'
+// ビタミン・ポップカラーパレット (Vitamin Pop Palette)
+const categoryPalette = {
+    organize: {
+        bg: 'bg-[#00F0FF]/15 text-[#0891b2] dark:text-[#00F0FF]',
+        badge: 'bg-[#00F0FF] text-gray-900 border-gray-900',
+        hoverBorder: 'hover:border-[#00F0FF]'
+    },
+    convert: {
+        bg: 'bg-[#FFE600]/20 text-[#b45309] dark:text-[#FFE600]',
+        badge: 'bg-[#FFE600] text-gray-900 border-gray-900',
+        hoverBorder: 'hover:border-[#FFE600]'
+    },
+    security: {
+        bg: 'bg-[#10E599]/20 text-[#059669] dark:text-[#10E599]',
+        badge: 'bg-[#10E599] text-gray-900 border-gray-900',
+        hoverBorder: 'hover:border-[#10E599]'
+    },
+    ai: {
+        bg: 'bg-[#8B5CF6]/20 text-[#7C3AED] dark:text-[#C084FC]',
+        badge: 'bg-[#8B5CF6] text-white border-gray-900',
+        hoverBorder: 'hover:border-[#8B5CF6]'
+    },
+    default: {
+        bg: 'bg-[#FF2E93]/15 text-[#FF2E93]',
+        badge: 'bg-[#FF2E93] text-white border-gray-900',
+        hoverBorder: 'hover:border-[#FF2E93]'
+    }
 };
 
 /**
- * Modern High-Polish Tool Card Component (Light & Dark Theme Ready)
+ * Vitamin Pop & Digital Neo Tool Card Component
+ * Style: ステッカー・グリッド (Sticker Grid)
  */
 export const ToolCard = ({ tool, onSelect }) => {
     const { getToolInfo } = useTranslation();
     const info = getToolInfo(tool.slug, tool);
 
     const IconComponent = tool.icon;
-    const badgeClass = badgeStyles[tool.badgeColor] || badgeStyles.blue;
+    const palette = categoryPalette[tool.category] || categoryPalette.default;
     const badgeText = info.badge || tool.badge;
 
     return (
         <button
             onClick={() => onSelect(tool.slug)}
-            className="flex flex-col text-left p-6 bg-white dark:bg-gray-800/90 rounded-3xl border border-gray-100 dark:border-gray-700/80 shadow-2xs hover:shadow-xl hover:-translate-y-1.5 hover:border-blue-200 dark:hover:border-blue-500/50 transition-all duration-200 group w-full cursor-pointer relative overflow-hidden focus:outline-none focus:ring-4 focus:ring-blue-500/10"
+            className="flex flex-col text-left p-6 bg-white dark:bg-gray-800 rounded-3xl border-2 border-gray-900 dark:border-gray-600 pop-shadow hover:-translate-y-1.5 hover:rotate-[-0.6deg] hover:shadow-[6px_6px_0px_#0f172a] dark:hover:shadow-[6px_6px_0px_#00F0FF] transition-all duration-200 group w-full cursor-pointer relative overflow-hidden focus:outline-none focus:ring-4 focus:ring-[#FF2E93]/20"
         >
-            {/* Top Row: Icon + Badge */}
+            {/* Top Row: Icon + Sticker Badge */}
             <div className="flex items-center justify-between w-full mb-4">
-                <div className="p-3.5 rounded-2xl bg-blue-50/80 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white dark:group-hover:bg-blue-600 transition-all duration-200 shadow-2xs group-hover:scale-105">
-                    {IconComponent && <IconComponent className="h-6 w-6" />}
+                <div className={`p-3.5 rounded-2xl border-2 border-gray-900 ${palette.bg} group-hover:bg-[#FF2E93] group-hover:text-white transition-all duration-200 pop-shadow-sm group-hover:scale-110 group-hover:rotate-6`}>
+                    {IconComponent && <IconComponent className="h-6 w-6 stroke-[2.5]" />}
                 </div>
 
                 {badgeText && (
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-2xs ${badgeClass}`}>
+                    <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-gray-900 rotate-[3deg] group-hover:rotate-0 transition-transform pop-shadow-sm ${palette.badge}`}>
                         {badgeText}
                     </span>
                 )}
             </div>
 
             {/* Title & Description */}
-            <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-between">
+            <h3 className="text-base font-black text-gray-900 dark:text-white mb-2 group-hover:text-[#FF2E93] dark:group-hover:text-[#00F0FF] transition-colors flex items-center justify-between">
                 <span>{info.name}</span>
-                <span className="text-blue-600 dark:text-blue-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-sm">
+                <span className="h-6 w-6 rounded-full bg-[#FFE600] text-gray-900 border border-gray-900 text-xs font-black flex items-center justify-center opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
                     →
                 </span>
             </h3>
 
-            <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
+            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2 font-medium">
                 {info.description}
             </p>
         </button>

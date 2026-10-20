@@ -1,4 +1,9 @@
-/* Modern App Global CSS */
+/* ========================================================
+   スタイル: ビタミン・ポップ / デジタル・ネオ (Vitamin Pop / Digital Neo)
+   テーマ: Digital Pop & Academic
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=Noto+Sans+TC:wght@500;700;900&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -7,36 +12,144 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f8fafc;
-  color: #1e293b;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* 點陣背景 (Dot Pattern) */
+.bg-dot-pattern {
+  background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.dark .bg-dot-pattern {
+  background-image: radial-gradient(#334155 1.5px, transparent 1.5px);
+}
+
+/* 有機阿米巴形狀 (Organic Amoeba Blobs) */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.06) rotate(6deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95) rotate(-6deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(-25px, 25px) scale(1.08) rotate(-8deg);
+  }
+  66% {
+    transform: translate(25px, -15px) scale(0.92) rotate(5deg);
+  }
+}
+
+.amoeba-blob-1 {
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  animation: floatSlow 18s ease-in-out infinite;
+}
+
+.amoeba-blob-2 {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: floatReverse 22s ease-in-out infinite;
+}
+
+.amoeba-blob-3 {
+  border-radius: 50% 50% 35% 65% / 40% 60% 40% 60%;
+  animation: floatSlow 25s ease-in-out infinite;
+}
+
+/* Neo-Pop 硬邊陰影效果 (Pop Neobrutalism Shadow) */
+.pop-shadow-sm {
+  box-shadow: 2px 2px 0px #0f172a;
+}
+
+.pop-shadow {
+  box-shadow: 4px 4px 0px #0f172a;
+}
+
+.pop-shadow-lg {
+  box-shadow: 6px 6px 0px #0f172a;
+}
+
+.dark .pop-shadow-sm {
+  box-shadow: 2px 2px 0px #00F0FF;
+}
+
+.dark .pop-shadow {
+  box-shadow: 4px 4px 0px #00F0FF;
+}
+
+.dark .pop-shadow-lg {
+  box-shadow: 6px 6px 0px #FF2E93;
+}
+
+/* 貼紙傾斜感 */
+.sticker-tilt-1 {
+  transform: rotate(-1.5deg);
+}
+
+.sticker-tilt-2 {
+  transform: rotate(1.5deg);
+}
+
+/* 手繪螢光筆標記效果 (Marker Highlighter) */
+.marker-highlight-yellow {
+  background: linear-gradient(180deg, transparent 60%, rgba(255, 230, 0, 0.7) 60%);
+}
+
+.marker-highlight-pink {
+  background: linear-gradient(180deg, transparent 60%, rgba(255, 46, 147, 0.4) 60%);
+}
+
+.marker-highlight-cyan {
+  background: linear-gradient(180deg, transparent 60%, rgba(0, 240, 255, 0.45) 60%);
+}
+
+/* 袋文字 (Text Outline / Stroke) */
+.text-stroke-pop {
+  -webkit-text-stroke: 1.5px #0f172a;
+  text-stroke: 1.5px #0f172a;
 }
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #FF2E93;
+  border-radius: 6px;
+  border: 2px solid #0f172a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #00F0FF;
 }
 
 /* Smooth fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -45,5 +158,5 @@ body {
 }
 
 .animate-in {
-  animation: fadeIn 0.25s ease-out forwards;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

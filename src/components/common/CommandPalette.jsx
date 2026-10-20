@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, X, CornerDownLeft } from 'lucide-react';
+import { Search, X, CornerDownLeft, Sparkles } from 'lucide-react';
 import { tools } from '../../config/tools.js';
 import { useTranslation } from '../../i18n/LanguageContext.jsx';
 
 /**
- * Spotlight-Style Cmd+K / Ctrl+K Command Palette
+ * Vitamin Pop Spotlight-Style Cmd+K / Ctrl+K Command Palette
  */
 export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
     const [query, setQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
     const inputRef = useRef(null);
     const listRef = useRef(null);
-    const { t, getToolInfo, getCategoryLabel } = useTranslation();
+    const { t, getToolInfo } = useTranslation();
 
     // Filter tools based on query (supports both English and Chinese matching)
     const filteredTools = React.useMemo(() => {
@@ -81,10 +81,10 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
             {/* Backdrop click */}
             <div className="fixed inset-0" onClick={onClose} />
 
-            <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-150">
+            <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 border-2 border-gray-900 dark:border-gray-600 rounded-3xl pop-shadow-lg overflow-hidden z-10 animate-in zoom-in-95 duration-150">
                 {/* Search Bar Input */}
-                <div className="relative flex items-center px-4 py-3.5 border-b border-gray-100 dark:border-gray-800">
-                    <Search className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 shrink-0" />
+                <div className="relative flex items-center px-5 py-4 border-b-2 border-gray-900 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+                    <Search className="h-5 w-5 text-gray-900 dark:text-white mr-3 shrink-0 stroke-[2.5]" />
                     <input
                         ref={inputRef}
                         type="text"
@@ -98,23 +98,23 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                             setSelectedIndex(0);
                         }}
                         placeholder={t('commandPalette.placeholder')}
-                        className="w-full bg-transparent text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none font-medium"
+                        className="w-full bg-transparent text-sm sm:text-base text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none font-bold"
                     />
                     {query ? (
-                        <button onClick={() => setQuery('')} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer">
-                            <X className="h-4 w-4" />
+                        <button onClick={() => setQuery('')} className="p-1 rounded-full bg-[#FF2E93] text-white hover:scale-110 transition-transform cursor-pointer">
+                            <X className="h-3.5 w-3.5 stroke-[3]" />
                         </button>
                     ) : (
-                        <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-bold text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md">
+                        <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-black text-gray-900 bg-[#FFE600] border border-gray-900 rounded-md">
                             ESC
                         </kbd>
                     )}
                 </div>
 
                 {/* Results List */}
-                <div ref={listRef} className="max-h-[380px] overflow-y-auto p-2 space-y-1">
+                <div ref={listRef} className="max-h-[380px] overflow-y-auto p-3 space-y-1.5">
                     {filteredTools.length === 0 ? (
-                        <div className="text-center py-12 text-xs text-gray-500 dark:text-gray-400">
+                        <div className="text-center py-12 text-sm text-gray-500 dark:text-gray-400 font-bold">
                             {t('commandPalette.noResults')} "{query}"
                         </div>
                     ) : (
@@ -131,30 +131,30 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                                         onClose();
                                     }}
                                     onMouseEnter={() => setSelectedIndex(idx)}
-                                    className={`w-full flex items-center justify-between p-3 rounded-2xl text-left transition-all cursor-pointer ${
+                                    className={`w-full flex items-center justify-between p-3 rounded-2xl text-left transition-all cursor-pointer border-2 ${
                                         isSelected 
-                                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-800' 
-                                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/60 border border-transparent'
+                                            ? 'bg-[#00F0FF]/20 text-gray-900 dark:text-white border-gray-900 pop-shadow-sm -translate-y-0.5' 
+                                            : 'border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
-                                        <div className={`p-2 rounded-xl shrink-0 ${
-                                            isSelected ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+                                        <div className={`p-2 rounded-xl shrink-0 border-2 border-gray-900 ${
+                                            isSelected ? 'bg-[#FF2E93] text-white' : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100'
                                         }`}>
-                                            {IconComponent && <IconComponent className="h-4 w-4" />}
+                                            {IconComponent && <IconComponent className="h-4 w-4 stroke-[2.5]" />}
                                         </div>
                                         <div className="min-w-0">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                                                <span className="text-xs sm:text-sm font-black text-gray-900 dark:text-white truncate">
                                                     {tool.displayName}
                                                 </span>
                                                 {tool.displayBadge && (
-                                                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                                                    <span className="text-[10px] font-black px-2 py-0.2 rounded-full bg-[#FFE600] text-gray-900 border border-gray-900">
                                                         {tool.displayBadge}
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-md">
+                                            <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-md font-medium">
                                                 {tool.displayDescription}
                                             </p>
                                         </div>
@@ -162,9 +162,9 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
 
                                     <div className="flex items-center gap-1 text-xs text-gray-400 shrink-0 ml-2">
                                         {isSelected && (
-                                            <span className="inline-flex items-center gap-1 text-[10px] text-blue-600 dark:text-blue-400 font-bold">
+                                            <span className="inline-flex items-center gap-1 text-[11px] text-gray-900 dark:text-white font-black bg-[#FFE600] px-2 py-0.5 rounded-lg border border-gray-900">
                                                 <span>{t('commandPalette.hintOpen')}</span>
-                                                <CornerDownLeft className="h-3 w-3" />
+                                                <CornerDownLeft className="h-3 w-3 stroke-[3]" />
                                             </span>
                                         )}
                                     </div>
@@ -175,13 +175,15 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                 </div>
 
                 {/* Footer Tip */}
-                <div className="px-4 py-2.5 bg-gray-50 dark:bg-gray-800/60 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
+                <div className="px-5 py-3 bg-gray-50 dark:bg-gray-800/80 border-t-2 border-gray-900 dark:border-gray-700 flex items-center justify-between text-xs text-gray-600 dark:text-gray-300 font-bold">
                     <div className="flex items-center gap-3">
-                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↑</kbd> <kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↓</kbd> {t('commandPalette.hintNavigate')}</span>
-                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↵</kbd> {t('commandPalette.hintOpen')}</span>
-                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">esc</kbd> {t('commandPalette.hintClose')}</span>
+                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border border-gray-900 rounded text-[10px]">↑</kbd> <kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border border-gray-900 rounded text-[10px]">↓</kbd> {t('commandPalette.hintNavigate')}</span>
+                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border border-gray-900 rounded text-[10px]">↵</kbd> {t('commandPalette.hintOpen')}</span>
+                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border border-gray-900 rounded text-[10px]">esc</kbd> {t('commandPalette.hintClose')}</span>
                     </div>
-                    <span className="font-semibold text-blue-600 dark:text-blue-400">PDF Toolkit Pro</span>
+                    <span className="font-black text-[#FF2E93] flex items-center gap-1">
+                        <Sparkles className="h-3.5 w-3.5 fill-[#FF2E93]" /> POP NEO
+                    </span>
                 </div>
             </div>
         </div>

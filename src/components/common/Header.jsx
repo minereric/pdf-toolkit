@@ -1,16 +1,16 @@
 import React from 'react';
-import { ArrowLeft, FileText, Shield, Github, Sun, Moon, Coffee, Globe } from 'lucide-react';
+import { ArrowLeft, Sparkles, Github, Sun, Moon, Globe, ShieldCheck } from 'lucide-react';
 import { useTranslation } from '../../i18n/LanguageContext.jsx';
 
 /**
- * Top Application Header with Breadcrumb, Language Switcher, Theme Switcher, and Links
+ * Vitamin Pop & Digital Neo Application Header
  */
-export const Header = ({ activeTool, onBack, theme, onToggleTheme, onOpenCommandPalette }) => {
+export const Header = ({ activeTool, onBack, theme, onToggleTheme }) => {
     const { t, language, toggleLanguage, getToolInfo } = useTranslation();
     const activeToolInfo = activeTool ? getToolInfo(activeTool.slug, activeTool) : null;
 
     return (
-        <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100 dark:border-gray-800 shadow-2xs transition-colors duration-200">
+        <header className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md sticky top-0 z-40 border-b-2 border-gray-900 dark:border-gray-700 transition-colors duration-200">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="flex items-center justify-between h-16">
                     {/* Left: Brand & Breadcrumb */}
@@ -18,26 +18,29 @@ export const Header = ({ activeTool, onBack, theme, onToggleTheme, onOpenCommand
                         {activeTool ? (
                             <button
                                 onClick={onBack}
-                                className="px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors flex items-center gap-1.5 text-xs font-bold shadow-2xs cursor-pointer"
+                                className="px-3.5 py-1.5 rounded-2xl bg-white dark:bg-gray-800 border-2 border-gray-900 dark:border-gray-600 hover:bg-[#FFE600] dark:hover:bg-[#FF2E93] text-gray-900 dark:text-white transition-all flex items-center gap-1.5 text-xs font-black pop-shadow-sm hover:-translate-y-0.5 cursor-pointer active:translate-x-0.5 active:translate-y-0.5"
                                 aria-label={t('header.allTools')}
                             >
-                                <ArrowLeft className="h-4 w-4" />
+                                <ArrowLeft className="h-4 w-4 stroke-[2.5]" />
                                 <span>{t('header.allTools')}</span>
                             </button>
                         ) : (
-                            <div className="p-2 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl shadow-xs shadow-blue-500/20">
-                                <FileText className="h-5 w-5" />
+                            <div className="p-2 bg-[#FF2E93] text-white rounded-2xl border-2 border-gray-900 pop-shadow-sm rotate-[-3deg] hover:rotate-0 transition-transform">
+                                <Sparkles className="h-5 w-5 fill-white stroke-[2.5]" />
                             </div>
                         )}
 
                         <div className="flex items-center gap-2">
-                            <span className="text-base font-black text-gray-900 dark:text-white tracking-tight">
+                            <span className="text-base sm:text-lg font-black text-gray-900 dark:text-white tracking-tight">
                                 {t('header.title')}
+                            </span>
+                            <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#00F0FF] text-gray-900 border border-gray-900 rotate-[2deg]">
+                                POP NEO
                             </span>
                             {activeTool && (
                                 <>
-                                    <span className="text-gray-300 dark:text-gray-600 font-light">/</span>
-                                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40 px-2.5 py-0.5 rounded-full border border-blue-100 dark:border-blue-800">
+                                    <span className="text-gray-400 font-bold">/</span>
+                                    <span className="text-xs font-black text-white bg-gradient-to-r from-[#FF2E93] to-[#8B5CF6] px-3 py-1 rounded-full border border-gray-900 pop-shadow-sm">
                                         {activeToolInfo?.name || activeTool.name}
                                     </span>
                                 </>
@@ -45,23 +48,23 @@ export const Header = ({ activeTool, onBack, theme, onToggleTheme, onOpenCommand
                         </div>
                     </div>
 
-                    {/* Right: Language Switcher + Privacy Pill + Dark Mode + Github */}
+                    {/* Right: Language Switcher + Privacy Pill + Dark Mode + Github (mineeric) */}
                     <div className="flex items-center gap-2 sm:gap-3">
                         {/* Language Switcher Plugin Button */}
                         <button
                             type="button"
                             onClick={toggleLanguage}
-                            className="h-9 px-3 flex items-center gap-1.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                            className="h-9 px-3 flex items-center gap-1.5 rounded-2xl bg-[#FFE600] hover:bg-[#ffd000] text-gray-900 border-2 border-gray-900 text-xs font-black transition-all cursor-pointer pop-shadow-sm hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5"
                             title={t('header.switchLanguage')}
                             aria-label={t('header.switchLanguage')}
                         >
-                            <Globe className="h-3.5 w-3.5" />
+                            <Globe className="h-3.5 w-3.5 stroke-[2.5]" />
                             <span>{language === 'zh-TW' ? '繁體中文' : 'English'}</span>
                         </button>
 
-                        {/* Privacy Pill */}
-                        <div className="hidden lg:flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
-                            <Shield className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                        {/* Privacy Pill (Academic & Security) */}
+                        <div className="hidden lg:flex items-center gap-1.5 h-9 px-3.5 rounded-2xl bg-[#10E599]/20 dark:bg-[#10E599]/30 border-2 border-gray-900 dark:border-gray-600 text-gray-900 dark:text-emerald-300 text-xs font-black pop-shadow-sm">
+                            <ShieldCheck className="h-4 w-4 text-[#059669] dark:text-[#10E599] stroke-[2.5]" />
                             <span>{t('header.clientSidePrivate')}</span>
                         </div>
 
@@ -69,39 +72,27 @@ export const Header = ({ activeTool, onBack, theme, onToggleTheme, onOpenCommand
                         <button
                             type="button"
                             onClick={onToggleTheme}
-                            className="h-9 w-9 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 transition-all cursor-pointer"
+                            className="h-9 w-9 flex items-center justify-center rounded-2xl bg-white dark:bg-gray-800 hover:bg-[#00F0FF] dark:hover:bg-[#8B5CF6] border-2 border-gray-900 dark:border-gray-600 text-gray-900 dark:text-gray-100 transition-all cursor-pointer pop-shadow-sm hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5"
                             title={theme === 'dark' ? t('header.switchThemeToLight') : t('header.switchThemeToDark')}
                             aria-label="Toggle theme"
                         >
                             {theme === 'dark' ? (
-                                <Sun className="h-4 w-4 text-amber-400 fill-amber-400/20" />
+                                <Sun className="h-4 w-4 text-[#FFE600] fill-[#FFE600] stroke-[2]" />
                             ) : (
-                                <Moon className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+                                <Moon className="h-4 w-4 text-gray-900 stroke-[2.5]" />
                             )}
                         </button>
 
-                        {/* Buy Me A Coffee */}
+                        {/* GitHub Link (minereric) */}
                         <a
-                            href="https://www.buymeacoffee.com/dhananiyash"
+                            href="https://github.com/minereric"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="h-9 hidden sm:flex items-center gap-1.5 px-3 rounded-xl bg-[#FFDD00] hover:bg-[#ffe433] text-gray-900 text-xs font-bold transition-all hover:scale-102"
-                            title="Support the developer"
+                            className="h-9 flex items-center gap-1.5 px-3.5 rounded-2xl bg-white dark:bg-gray-800 border-2 border-gray-900 dark:border-gray-600 hover:bg-[#FF2E93] hover:text-white dark:hover:bg-[#00F0FF] dark:hover:text-gray-900 text-gray-900 dark:text-gray-100 text-xs font-black transition-all pop-shadow-sm hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5"
+                            title="GitHub (minereric)"
                         >
-                            <Coffee className="h-4 w-4 text-gray-900" />
-                            <span className="hidden md:inline">Coffee</span>
-                        </a>
-
-                        {/* GitHub Link */}
-                        <a
-                            href="https://github.com/yashdhanani/pdf-toolkit-app"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="h-9 flex items-center gap-1.5 px-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all"
-                            title="GitHub Repository"
-                        >
-                            <Github className="h-4 w-4" />
-                            <span className="hidden md:inline">GitHub</span>
+                            <Github className="h-4 w-4 stroke-[2.5]" />
+                            <span className="hidden sm:inline">GitHub</span>
                         </a>
                     </div>
                 </div>

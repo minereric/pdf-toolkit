@@ -118,7 +118,7 @@ const AppContent = () => {
     const currentToolInfo = activeTool ? getToolInfo(activeTool.slug, activeTool) : null;
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#f8fafc] dark:bg-[#0f172a] font-sans text-gray-800 dark:text-gray-100 antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
+        <div className="min-h-screen flex flex-col bg-white dark:bg-[#0a0f1e] font-sans text-gray-900 dark:text-gray-100 antialiased selection:bg-[#FF2E93] selection:text-white transition-colors duration-200 bg-dot-pattern">
             {/* Global Spotlight Cmd+K Search Palette */}
             <CommandPalette
                 isOpen={isCommandPaletteOpen}
@@ -126,7 +126,7 @@ const AppContent = () => {
                 onSelectTool={handleToolSelect}
             />
 
-            {/* SaaS Header */}
+            {/* Pop Neo Header */}
             <Header 
                 activeTool={activeTool} 
                 onBack={handleBack} 
@@ -136,7 +136,7 @@ const AppContent = () => {
             />
 
             {/* Main Content Area */}
-            <main className="flex-1 container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+            <main className="flex-1 container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl relative">
                 {!activeTool ? (
                     <div>
                         {/* Hero Section with Search & Category Pills */}
@@ -159,21 +159,24 @@ const AppContent = () => {
                 ) : (
                     /* Active Tool Workspace */
                     <div className="max-w-5xl mx-auto animate-in fade-in duration-200">
-                        {/* Tool Header Info */}
-                        <div className="text-center mb-8">
-                            <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mb-3 shadow-2xs">
-                                {React.createElement(activeTool.icon, { className: "h-7 w-7" })}
+                        {/* Pop Neo Tool Header */}
+                        <div className="text-center mb-8 relative">
+                            {/* 有機形ツールアイコン (Organic Tool Icon) */}
+                            <div className="inline-flex items-center justify-center p-4 rounded-3xl bg-[#FFE600] text-gray-900 mb-4 border-2 border-gray-900 pop-shadow rotate-[-4deg] group-hover:rotate-0 transition-transform">
+                                {React.createElement(activeTool.icon, { className: "h-8 w-8 stroke-[2.5]" })}
                             </div>
-                            <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight sm:text-4xl">
+                            <h2 className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight">
                                 {currentToolInfo?.name || activeTool.name}
                             </h2>
-                            <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+                            {/* 手繪下劃線 */}
+                            <div className="w-24 h-2 mx-auto mt-1 rounded-full bg-[#FF2E93] border border-gray-900 pop-shadow-sm rotate-[-1deg]" />
+                            <p className="mt-3 text-sm sm:text-base text-gray-700 dark:text-gray-300 max-w-xl mx-auto font-medium">
                                 {currentToolInfo?.description || activeTool.description}
                             </p>
                         </div>
 
                         {/* Tool Canvas / Workspace */}
-                        <div className="bg-white dark:bg-gray-800/90 p-5 sm:p-8 rounded-3xl shadow-sm border border-gray-100/80 dark:border-gray-700/80 transition-colors duration-200">
+                        <div className="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-3xl border-2 border-gray-900 dark:border-gray-600 pop-shadow transition-colors duration-200">
                             {libsReady ? (
                                 React.createElement(activeTool.component, { tool: activeTool })
                             ) : (
@@ -184,7 +187,7 @@ const AppContent = () => {
                 )}
             </main>
 
-            {/* Footer */}
+            {/* Pop Neo Footer */}
             <Footer />
         </div>
     );
