@@ -1,16 +1,22 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud } from 'lucide-react';
+import { useTranslation } from '../../i18n/LanguageContext.jsx';
 
 /**
  * Reusable Drag-and-Drop file uploader component using react-dropzone
  */
 export const FileUploader = ({ onFilesAccepted, accept, multiple = false, text }) => {
+    const { t } = useTranslation();
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop: onFilesAccepted,
         accept,
         multiple
     });
+
+    const displayText = text || t('fileUploader.defaultText');
+    const multipleText = multiple ? t('fileUploader.multipleSupported') : t('fileUploader.singleFile');
+    const formatsLabel = t('fileUploader.acceptedFormats');
 
     return (
         <div
@@ -23,13 +29,13 @@ export const FileUploader = ({ onFilesAccepted, accept, multiple = false, text }
                 <div className="p-3 bg-blue-50 rounded-full mb-3 text-blue-500">
                     <UploadCloud className="w-8 h-8" />
                 </div>
-                <p className="text-lg font-semibold text-gray-700">{text || "Drag & drop files here, or click to browse"}</p>
-                <p className="text-sm text-gray-500 mt-1">
-                    {multiple ? 'Multiple files supported' : 'Single file'}
+                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">{displayText}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {multipleText}
                 </p>
                 {accept && (
-                    <p className="text-xs text-gray-400 mt-2">
-                        Accepted formats: {Object.values(accept).flat().join(', ')}
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                        {formatsLabel}: {Object.values(accept).flat().join(', ')}
                     </p>
                 )}
             </div>

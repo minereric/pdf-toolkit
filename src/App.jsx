@@ -7,16 +7,18 @@ import MessageBox from './components/common/MessageBox.jsx';
 import CommandPalette from './components/common/CommandPalette.jsx';
 import { tools } from './config/tools.js';
 import { loadPdfLibraries } from './utils/scriptLoader.js';
+import { LanguageProvider, useTranslation } from './i18n/LanguageContext.jsx';
 
 /**
- * PDF Toolkit Root Application
+ * PDF Toolkit Root Application Content
  */
-const App = () => {
+const AppContent = () => {
     const [activeTool, setActiveTool] = useState(null);
     const [libsReady, setLibsReady] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+    const { t, getToolInfo } = useTranslation();
 
     // Theme Management (Light / Dark)
     const [theme, setTheme] = useState(() => {
@@ -74,7 +76,7 @@ const App = () => {
         return map;
     }, []);
 
-    // Filter tools based on category and search text
+    // Filter tools based on category and search text (supports both English and Traditional Chinese)
     const filteredTools = useMemo(() => {
         const query = searchQuery.toLowerCase().trim();
         return tools.filter(tool => {
@@ -82,14 +84,19 @@ const App = () => {
             if (!matchesCategory) return false;
             if (!query) return true;
 
+            const toolInfo = getToolInfo(tool.slug, tool);
+
             return (
                 tool.name.toLowerCase().includes(query) ||
+                (toolInfo.name && toolInfo.name.toLowerCase().includes(query)) ||
                 tool.description.toLowerCase().includes(query) ||
+                (toolInfo.description && toolInfo.description.toLowerCase().includes(query)) ||
                 tool.slug.toLowerCase().includes(query) ||
-                (tool.badge && tool.badge.toLowerCase().includes(query))
+                (tool.badge && tool.badge.toLowerCase().includes(query)) ||
+                (toolInfo.badge && toolInfo.badge.toLowerCase().includes(query))
             );
         });
-    }, [searchQuery, selectedCategory]);
+    }, [searchQuery, selectedCategory, getToolInfo]);
 
     const handleToolSelect = (slug) => {
         const tool = tools.find(t => t.slug === slug);
@@ -107,6 +114,8 @@ const App = () => {
         setSearchQuery('');
         setSelectedCategory('all');
     };
+
+    const currentToolInfo = activeTool ? getToolInfo(activeTool.slug, activeTool) : null;
 
     return (
         <div className="min-h-screen flex flex-col bg-[#f8fafc] dark:bg-[#0f172a] font-sans text-gray-800 dark:text-gray-100 antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
@@ -156,10 +165,10 @@ const App = () => {
                                 {React.createElement(activeTool.icon, { className: "h-7 w-7" })}
                             </div>
                             <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight sm:text-4xl">
-                                {activeTool.name}
+                                {currentToolInfo?.name || activeTool.name}
                             </h2>
                             <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
-                                {activeTool.description}
+                                {currentToolInfo?.description || activeTool.description}
                             </p>
                         </div>
 
@@ -168,7 +177,7 @@ const App = () => {
                             {libsReady ? (
                                 React.createElement(activeTool.component, { tool: activeTool })
                             ) : (
-                                <MessageBox type="loading" message="Initializing high-performance PDF processing engine..." />
+                                <MessageBox type="loading" message={t('app.loadingEngine')} />
                             )}
                         </div>
                     </div>
@@ -178,6 +187,14 @@ const App = () => {
             {/* Footer */}
             <Footer />
         </div>
+    );
+};
+
+export const App = () => {
+    return (
+        <LanguageProvider>
+            <AppContent />
+        </LanguageProvider>
     );
 };
 

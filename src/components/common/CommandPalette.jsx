@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, X, Sparkles, ArrowRight, CornerDownLeft } from 'lucide-react';
+import { Search, X, CornerDownLeft } from 'lucide-react';
 import { tools } from '../../config/tools.js';
+import { useTranslation } from '../../i18n/LanguageContext.jsx';
 
 /**
  * Spotlight-Style Cmd+K / Ctrl+K Command Palette
@@ -10,18 +11,33 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const inputRef = useRef(null);
     const listRef = useRef(null);
+    const { t, getToolInfo, getCategoryLabel } = useTranslation();
 
-    // Filter tools based on query
+    // Filter tools based on query (supports both English and Chinese matching)
     const filteredTools = React.useMemo(() => {
-        if (!query.trim()) return tools.slice(0, 8); // Top 8 by default
+        const enriched = tools.map(tool => {
+            const info = getToolInfo(tool.slug, tool);
+            return {
+                ...tool,
+                displayName: info.name,
+                displayDescription: info.description,
+                displayBadge: info.badge,
+            };
+        });
+
+        if (!query.trim()) return enriched.slice(0, 8); // Top 8 by default
         const q = query.toLowerCase().trim();
-        return tools.filter(t => 
+        return enriched.filter(t => 
             t.name.toLowerCase().includes(q) ||
+            t.displayName.toLowerCase().includes(q) ||
             t.description.toLowerCase().includes(q) ||
+            t.displayDescription.toLowerCase().includes(q) ||
             t.category.toLowerCase().includes(q) ||
-            (t.badge && t.badge.toLowerCase().includes(q))
+            t.slug.toLowerCase().includes(q) ||
+            (t.badge && t.badge.toLowerCase().includes(q)) ||
+            (t.displayBadge && t.displayBadge.toLowerCase().includes(q))
         );
-    }, [query]);
+    }, [query, getToolInfo]);
 
     useEffect(() => {
         if (isOpen) {
@@ -81,11 +97,11 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                             setQuery(e.target.value);
                             setSelectedIndex(0);
                         }}
-                        placeholder="Type a command or search tools... (e.g. merge, compress, sign, ocr)"
+                        placeholder={t('commandPalette.placeholder')}
                         className="w-full bg-transparent text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none font-medium"
                     />
                     {query ? (
-                        <button onClick={() => setQuery('')} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <button onClick={() => setQuery('')} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer">
                             <X className="h-4 w-4" />
                         </button>
                     ) : (
@@ -99,7 +115,7 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                 <div ref={listRef} className="max-h-[380px] overflow-y-auto p-2 space-y-1">
                     {filteredTools.length === 0 ? (
                         <div className="text-center py-12 text-xs text-gray-500 dark:text-gray-400">
-                            No matching tools found for "{query}".
+                            {t('commandPalette.noResults')} "{query}"
                         </div>
                     ) : (
                         filteredTools.map((tool, idx) => {
@@ -130,16 +146,16 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                                         <div className="min-w-0">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-xs font-bold text-gray-900 dark:text-white truncate">
-                                                    {tool.name}
+                                                    {tool.displayName}
                                                 </span>
-                                                {tool.badge && (
+                                                {tool.displayBadge && (
                                                     <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
-                                                        {tool.badge}
+                                                        {tool.displayBadge}
                                                     </span>
                                                 )}
                                             </div>
                                             <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-md">
-                                                {tool.description}
+                                                {tool.displayDescription}
                                             </p>
                                         </div>
                                     </div>
@@ -147,7 +163,7 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                                     <div className="flex items-center gap-1 text-xs text-gray-400 shrink-0 ml-2">
                                         {isSelected && (
                                             <span className="inline-flex items-center gap-1 text-[10px] text-blue-600 dark:text-blue-400 font-bold">
-                                                <span>Open</span>
+                                                <span>{t('commandPalette.hintOpen')}</span>
                                                 <CornerDownLeft className="h-3 w-3" />
                                             </span>
                                         )}
@@ -161,9 +177,9 @@ export const CommandPalette = ({ isOpen, onClose, onSelectTool }) => {
                 {/* Footer Tip */}
                 <div className="px-4 py-2.5 bg-gray-50 dark:bg-gray-800/60 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
                     <div className="flex items-center gap-3">
-                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↑</kbd> <kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↓</kbd> to navigate</span>
-                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↵</kbd> to select</span>
-                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">esc</kbd> to dismiss</span>
+                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↑</kbd> <kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↓</kbd> {t('commandPalette.hintNavigate')}</span>
+                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">↵</kbd> {t('commandPalette.hintOpen')}</span>
+                        <span><kbd className="font-sans px-1.5 py-0.5 bg-white dark:bg-gray-700 border rounded text-[10px]">esc</kbd> {t('commandPalette.hintClose')}</span>
                     </div>
                     <span className="font-semibold text-blue-600 dark:text-blue-400">PDF Toolkit Pro</span>
                 </div>

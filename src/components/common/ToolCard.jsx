@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from '../../i18n/LanguageContext.jsx';
 
 const badgeStyles = {
     blue: 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800',
@@ -17,8 +18,12 @@ const badgeStyles = {
  * Modern High-Polish Tool Card Component (Light & Dark Theme Ready)
  */
 export const ToolCard = ({ tool, onSelect }) => {
+    const { getToolInfo } = useTranslation();
+    const info = getToolInfo(tool.slug, tool);
+
     const IconComponent = tool.icon;
     const badgeClass = badgeStyles[tool.badgeColor] || badgeStyles.blue;
+    const badgeText = info.badge || tool.badge;
 
     return (
         <button
@@ -31,23 +36,23 @@ export const ToolCard = ({ tool, onSelect }) => {
                     {IconComponent && <IconComponent className="h-6 w-6" />}
                 </div>
 
-                {tool.badge && (
+                {badgeText && (
                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-2xs ${badgeClass}`}>
-                        {tool.badge}
+                        {badgeText}
                     </span>
                 )}
             </div>
 
             {/* Title & Description */}
             <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-between">
-                <span>{tool.name}</span>
+                <span>{info.name}</span>
                 <span className="text-blue-600 dark:text-blue-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-sm">
                     →
                 </span>
             </h3>
 
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
-                {tool.description}
+                {info.description}
             </p>
         </button>
     );
