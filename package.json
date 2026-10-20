@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "type": "module",
-  "homepage": "https://yashdhanani.github.io/pdf-toolkit-app/",
+  "homepage": "https://minereric.github.io/pdf-toolkit/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         PDF Toolkit 繁體中文化外掛
-// @namespace    https://github.com/minereric/pdf-toolkit-app
-// @version      1.0.0
+// @namespace    https://github.com/minereric/pdf-toolkit
+// @version      1.0.1
 // @description  將 PDF Toolkit 主要介面自動翻譯為繁體中文（支援本地服務與 GitHub Pages 官方版本）
 // @author       PDF Toolkit Localizer
+// @match        *://minereric.github.io/pdf-toolkit/*
 // @match        *://yashdhanani.github.io/pdf-toolkit-app/*
 // @match        *://localhost:*/*
 // @match        *://127.0.0.1:*/*

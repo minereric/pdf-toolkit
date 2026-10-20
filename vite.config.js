@@ -4,7 +4,8 @@ import UnoCSS from 'unocss/vite';
 import { presetUno, presetAttributify, presetIcons } from 'unocss';
 
 export default defineConfig({
-  base: '/pdf-toolkit-app/',
+  // 使用相對路徑，相容 GitHub Pages (https://<username>.github.io/pdf-toolkit/) 與本機開發
+  base: './',
   plugins: [
     react(),
     UnoCSS({
